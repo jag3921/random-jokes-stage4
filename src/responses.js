@@ -24,32 +24,20 @@ const jokes = [
     ];
 
 
-    const getRandomJokeResponse = (request, response, params) => {
+    const getRandomJokeResponse = (request, response, params, acceptedTypes) => {
+        if (!acceptedTypes.includes('text/xml')) {
             response.writeHead(200, {'Content-Type': 'application/json'});
             response.write(fetchJokeJSON(params.limit));
             response.end();
+        }
+        if (acceptedTypes.includes('text/xml')) {
+            response.writeHead(200, {'Content-Type': 'text/xml'});
+            response.write(fetchJokeXML(params.limit));
+            response.end();
+           
+        }
     }
 
-    // For phase 3
-    /*
-function fetchJokeXML(max=5) {
-    let myArray = [];
-    // Depending on the parameters, the array will hold randomly
-    // selected jokes. The array is then passed off as xml and 
-    // displayed on the browser as such. 
-    for (let i = 0; i < max; i++) {
-        let selectJoke = returnRandomNumber();
-        let selectedJoke = jokes[selectJoke];
-        const responseXML = `
-        <joke>
-          <question>${selectedJoke.q}</question>
-          <answer>${selectedJoke.q}</answer>
-        </joke>
-      `;
-      myArray.push(responseXML);
-    } 
-    return myArray;
-} */
 
 function fetchJokeJSON(max=5) {
     let myArray = [];
@@ -63,6 +51,33 @@ function fetchJokeJSON(max=5) {
     } 
     let displayJoke = JSON.stringify(myArray);
     return displayJoke   
+}
+
+function fetchJokeXML(max = 1) {
+    if (max == 1) {
+        let joke =  jokes[returnRandomNumber()];
+        let xmlResponse = `
+        <joke>
+            <q>${joke.q}</q>
+            <a>${joke.a}</a>
+        </joke>
+        `;
+        return xmlResponse
+    } else if (max > 1) { //Initialize xml
+        let xmlResponse = `<jokes>`;
+        // Add content to xml string
+        for (let i = 0; i < max; i++) {
+            let joke =  jokes[returnRandomNumber()];
+            xmlResponse += `
+            <joke>
+            <q>${joke.q}</q>
+            <a>${joke.a}</a>
+            </joke>
+            `;
+        } //Cap it off
+        xmlResponse += '</jokes>';
+        return xmlResponse;
+    }
 }
 function returnRandomNumber() {
     let num = Math.floor(Math.random() * 10);
