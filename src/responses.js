@@ -39,7 +39,7 @@ const jokes = [
     }
 
 
-function fetchJokeJSON(max=5) {
+function fetchJokeJSON(max=1) {
     let myArray = [];
     // Depending on the parameters, the array will hold randomly
     // selected jokes. The array is then passed off as json and 
