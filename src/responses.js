@@ -22,9 +22,13 @@ const jokes = [
     {q: "Dad, can you put the cat out??",
      a : "I didnt know it was on fire."}
     ];
-
-
-    const getRandomJokeResponse = (request, response, params, acceptedTypes) => {
+ // eslint-disable-next-line no-use-before-define
+    const getBinarySize = string => Buffer.byteLength(string, 'utf8'); //eslint-disable-line
+    const getRandomJokeResponse = (request, response, params, acceptedTypes, httpMethod) => {
+        if (httpMethod === 'HEAD') {
+            response.writeHead(200, {'Content-Type': 'text/plain', 'Content-Length': getBinarySize()});
+            response.end();
+        }
         if (!acceptedTypes.includes('text/xml')) {
             response.writeHead(200, {'Content-Type': 'application/json'});
             response.write(fetchJokeJSON(params.limit));

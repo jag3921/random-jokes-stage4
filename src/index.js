@@ -18,9 +18,10 @@ const onRequest = (req, res) => {
     const parsedUrl = url.parse(req.url);
     const pathname = parsedUrl.pathname;
     const params = query.parse(parsedUrl.query);
+    const httpMethod = req.method;
 // Will organize better in phase 3
-    let url1 = 'random-joke';
-    let url2 = 'random-joke?limit=10';
+   // let url1 = 'random-joke';
+   // let url2 = 'random-joke?limit=10';
     // For phase 3
     let acceptedTypes = req.headers.accept && req.headers.accept.split(',');
     acceptedTypes = acceptedTypes || [];
@@ -29,9 +30,9 @@ const onRequest = (req, res) => {
 
 
     if (urlStruct[pathname]) {
-        urlStruct[pathname](req, res, params, acceptedTypes);
+        urlStruct[pathname](req, res, params, acceptedTypes, httpMethod);
     } else {
-        urlStruct.notFound(req, res, url1, url2);
+        urlStruct.notFound(req, res);
     }
 }
 
