@@ -1,13 +1,18 @@
-// Random Jokes returend as json
+// Declare required modules
 const http = require('http');
 const url = require('url');
 const query = require('querystring');
 const htmlHandler = require('./htmlResponses');
 const responseHandler = require('./responses');
 
+// UrlStruct
 const urlStruct = {
-    '/random-joke': responseHandler.getRandomJokeResponse,
-    '/random-jokes': responseHandler.getRandomJokeResponse,
+    '/': htmlHandler.mainPageResponse,
+    '/app' : htmlHandler.appPage,
+    '/admin': responseHandler.getResponse,
+  //  '/suggest': htmlHandler.suggestPage,
+   '/image' : htmlHandler.imageResponse,
+    '/default-styles.css': htmlHandler.cssResponse,
     notFound: htmlHandler.get404Response
 };
 // eslint-disable-next-line
@@ -19,16 +24,12 @@ const onRequest = (req, res) => {
     const pathname = parsedUrl.pathname;
     const params = query.parse(parsedUrl.query);
     const httpMethod = req.method;
-// Will organize better in phase 3
-   // let url1 = 'random-joke';
-   // let url2 = 'random-joke?limit=10';
-    // For phase 3
+
+
     let acceptedTypes = req.headers.accept && req.headers.accept.split(',');
     acceptedTypes = acceptedTypes || [];
     console.log(acceptedTypes);
   
-
-
     if (urlStruct[pathname]) {
         urlStruct[pathname](req, res, params, acceptedTypes, httpMethod);
     } else {

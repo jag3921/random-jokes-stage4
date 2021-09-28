@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Star Wars App</title>
+    <h1>Interactive Star Wars App</h1>
+</head>
+<body>
+    <h3>Select a quiz category: </h3>
+<select id="selectCategory">
+    <option value="people">People</option>
+    <option value="planets">Planets</option>
+    <option value="films">Films</option>
+    <option value="species">Species</option>
+    <option value="vehicles">Vehicles</option>
+    <option value="starships">Starships</option>
+</select>
+<button type="button" id="btn">Begin Quiz!</button>
+    <script>
+        const selection = document.querySelector('#selectCategory');
+        const btn = document.querySelector('#btn');
+        // Organization of url object credit to: https://www.youtube.com/watch?v=qb6sMTeyLJY
+        // Time stamp - 4:05
+        let urls = {
+            base: 'https://swapi.dev/api/',
+            people: 'people/',
+            planets: 'planets/',
+            films: 'films/',
+            species: 'species/',
+            vehicles: 'vehicles/',
+            starships: 'starships/'
+        }
+
+        const loadApi = (endpoint) => {
+            fetch(urls.base + selection.value).then(response => {
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+            });
+        };
+        /*
+        async function loadAPI() {
+            let response = await fetch(urls.base + urls.planets);
+           let jsonObj = await response.json();
+           return jsonObj
+        } */
+
+
+        function init() {
+            
+          //  console.log(loadAPI());
+        }
+
+        window.onload = function () {
+            init();
+        } 
+        btn.onclick = (e) => {
+           loadApi(selection.value);
+        }
+    </script>
+</body>
+
+</html>
